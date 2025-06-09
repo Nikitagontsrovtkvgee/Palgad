@@ -1,92 +1,82 @@
 def lisa_inimesi(inimesed, palgad, mitu):
     for _ in range(mitu):
-        nimi = input("Sisesta nimi: ")
-        palk = int(input("Sisesta palk: "))
-        inimesed.append(nimi)
-        palgad.append(palk)
+        inimesed.append(input("Sisesta nimi: "))
+        palgad.append(int(input("Sisesta palk: ")))
 
 def kustuta_isik(inimesed, palgad):
-    nimi = input("Sisesta kustutatava isiku nimi: ")
-    while nimi in inimesed:
-        indeks = inimesed.index(nimi)
-        inimesed.pop(indeks)
-        palgad.pop(indeks)
-        print(f"{nimi} eemaldatud.")
-        nimi = input("Sisesta järgmine või vajuta Enter lõpetamiseks: ")
+    while (nimi := input("Sisesta kustutatava isiku nimi (Enter lÃµpetab): ")):
+        while nimi in inimesed:
+            i = inimesed.index(nimi)
+            inimesed.pop(i)
+            palgad.pop(i)
+            print(f"{nimi} eemaldatud.")
 
 def suurim_palk(inimesed, palgad):
     max_palk = max(palgad)
-    for i, palk in enumerate(palgad):
+    for nimi, palk in zip(inimesed, palgad):
         if palk == max_palk:
-            print(f"Suurim palk: {inimesed[i]} - {palk}€")
+            print(f"Suurim palk: {nimi} - {palk}â‚¬")
 
 def vaikseim_palk(inimesed, palgad):
     min_palk = min(palgad)
-    for i, palk in enumerate(palgad):
+    for nimi, palk in zip(inimesed, palgad):
         if palk == min_palk:
-            print(f"Väikseim palk: {inimesed[i]} - {palk}€")
+            print(f"VÃ¤ikseim palk: {nimi} - {palk}â‚¬")
 
 def sorteeri_palgad(inimesed, palgad, kasvav=True):
-    kokku = list(zip(inimesed, palgad))
-    kokku.sort(key=lambda x: x[1], reverse=not kasvav)
-    for nimi, palk in kokku:
-        print(f"{nimi}: {palk}€")
+    for nimi, palk in sorted(zip(inimesed, palgad), key=lambda x: x[1], reverse=not kasvav):
+        print(f"{nimi}: {palk}â‚¬")
 
 def votrdsed_palgad(inimesed, palgad):
-    palk_dict = {}
+    from collections import defaultdict
+    d = defaultdict(list)
     for nimi, palk in zip(inimesed, palgad):
-        palk_dict.setdefault(palk, []).append(nimi)
-    for palk, nimed in palk_dict.items():
+        d[palk].append(nimi)
+    for palk, nimed in d.items():
         if len(nimed) > 1:
-            print(f"{palk}€ saavad: {', '.join(nimed)} (kokku {len(nimed)})")
+            print(f"{palk}â‚¬ saavad: {', '.join(nimed)} (kokku {len(nimed)})")
 
 def otsi_palk_nime_jargi(inimesed, palgad):
-    nimi = input("Sisesta otsitav nimi: ")
-    for i, nimi_ in enumerate(inimesed):
-        if nimi_.lower() == nimi.lower():
-            print(f"{nimi_} saab {palgad[i]}€")
+    nimi = input("Sisesta otsitav nimi: ").lower()
+    for n, p in zip(inimesed, palgad):
+        if n.lower() == nimi:
+            print(f"{n} saab {p}â‚¬")
 
 def suurem_vaiksem_summa(inimesed, palgad):
-    valik = input("Kas soovid 'suurem' või 'väiksem' kui summa? ")
+    valik = input("Kas soovid 'suurem' vÃµi 'vÃ¤iksem' kui summa? ")
     piir = int(input("Sisesta summa: "))
     for nimi, palk in zip(inimesed, palgad):
-        if (valik == "suurem" and palk > piir) or (valik == "väiksem" and palk < piir):
-            print(f"{nimi} - {palk}€")
+        if (valik == "suurem" and palk > piir) or (valik == "vÃ¤iksem" and palk < piir):
+            print(f"{nimi} - {palk}â‚¬")
 
 def top_inimesed(inimesed, palgad, T=3):
-    kokku = list(zip(inimesed, palgad))
-    kokku.sort(key=lambda x: x[1])
+    top = sorted(zip(inimesed, palgad), key=lambda x: x[1])
     print(f"\nTOP {T} vaeseimat:")
-    for nimi, palk in kokku[:T]:
-        print(f"{nimi}: {palk}€")
+    for nimi, palk in top[:T]: print(f"{nimi}: {palk}â‚¬")
     print(f"\nTOP {T} rikkamat:")
-    for nimi, palk in kokku[-T:]:
-        print(f"{nimi}: {palk}€")
+    for nimi, palk in top[-T:]: print(f"{nimi}: {palk}â‚¬")
 
 def keskmine_palk(inimesed, palgad):
-    keskmine = sum(palgad) / len(palgad)
-    print(f"Keskmine palk: {keskmine:.2f}€")
-    for i, palk in enumerate(palgad):
-        if palk == round(keskmine):
-            print(f"{inimesed[i]} saab täpselt keskmist palka.")
+    k = sum(palgad) / len(palgad)
+    print(f"Keskmine palk: {k:.2f}â‚¬")
+    for nimi, palk in zip(inimesed, palgad):
+        if palk == round(k):
+            print(f"{nimi} saab tÃ¤pselt keskmist palka.")
 
 def tulumaks(inimesed, palgad):
-    for i, palk in enumerate(palgad):
-        netto = palk * 0.8  # oletame 20% tulumaks
-        print(f"{inimesed[i]}: Bruto {palk}€, Neto {netto:.2f}€")
+    for nimi, palk in zip(inimesed, palgad):
+        print(f"{nimi}: Bruto {palk}â‚¬, Neto {palk * 0.8:.2f}â‚¬")
 
 def sorteeri_nimed(inimesed, palgad, reverse=False):
-    kokku = list(zip(inimesed, palgad))
-    kokku.sort(key=lambda x: x[0], reverse=reverse)
-    for nimi, palk in kokku:
-        print(f"{nimi}: {palk}€")
+    for nimi, palk in sorted(zip(inimesed, palgad), key=lambda x: x[0], reverse=reverse):
+        print(f"{nimi}: {palk}â‚¬")
 
 def kustuta_alla_keskmise(inimesed, palgad):
-    keskmine = sum(palgad) / len(palgad)
+    k = sum(palgad) / len(palgad)
     i = 0
     while i < len(palgad):
-        if palgad[i] < keskmine:
-            print(f"Kustutatud: {inimesed[i]} - {palgad[i]}€")
+        if palgad[i] < k:
+            print(f"Kustutatud: {inimesed[i]} - {palgad[i]}â‚¬")
             inimesed.pop(i)
             palgad.pop(i)
         else:
@@ -99,37 +89,33 @@ def puhasta_andmed(inimesed, palgad):
 
 def prognoos_palk(inimesed, palgad, T):
     nimi = input("Sisesta isiku nimi: ")
-    for i in range(len(inimesed)):
-        if inimesed[i] == nimi:
-            tulevikupalk = palgad[i] * ((1.05) ** T)
-            print(f"{nimi} palk {T} aasta pärast: {tulevikupalk:.2f}€")
+    for i, n in enumerate(inimesed):
+        if n == nimi:
+            print(f"{n} palk {T} aasta pÃ¤rast: {palgad[i] * (1.05 ** T):.2f}â‚¬")
 
 def nime_muutmine(inimesed):
     for i in range(2, len(inimesed), 3):
-        uus_nimi = input(f"Sisesta uus nimi isikule {inimesed[i]}: ")
-        inimesed[i] = uus_nimi
+        inimesed[i] = input(f"Sisesta uus nimi isikule {inimesed[i]}: ")
 
 def redigeeri_andmeid(inimesed, palgad):
     nimi = input("Sisesta isiku nimi: ")
     for i, n in enumerate(inimesed):
         if n == nimi:
-            valik = input("Muuda 'nimi' või 'palk'? ")
-            if valik == "nimi":
-                uus = input("Sisesta uus nimi: ")
-                inimesed[i] = uus
-            elif valik == "palk":
-                uus = int(input("Sisesta uus palk: "))
-                palgad[i] = uus
+            v = input("Muuda 'nimi' vÃµi 'palk'? ")
+            if v == "nimi":
+                inimesed[i] = input("Sisesta uus nimi: ")
+            elif v == "palk":
+                palgad[i] = int(input("Sisesta uus palk: "))
 
 def otsi_tahe_jargi(inimesed, palgad):
-    täht = input("Sisesta täht: ").lower()
+    tÃ¤ht = input("Sisesta tÃ¤ht: ").lower()
     for nimi, palk in zip(inimesed, palgad):
-        if nimi.lower().startswith(täht):
-            print(f"{nimi} - {palk}€")
+        if nimi.lower().startswith(tÃ¤ht):
+            print(f"{nimi} - {palk}â‚¬")
 
 def naljakas_funktsioon(inimesed, palgad):
-    # 19 - Väljastab inimestest ja palkadest kõige naljakama "palk inimese kohta" suhet
-    max_suhe = max(palk / (len(nimi) + 1) for nimi, palk in zip(inimesed, palgad))
+    def suhe(nimi, palk): return palk / (len(nimi) + 1)
+    max_s = max(suhe(n, p) for n, p in zip(inimesed, palgad))
     for nimi, palk in zip(inimesed, palgad):
-        if palk / (len(nimi) + 1) == max_suhe:
-            print(f"'{nimi}' on efektiivseim: {palk}€ nime pikkusega {len(nimi)}.")
+        if suhe(nimi, palk) == max_s:
+            print(f"'{nimi}' on efektiivseim: {palk}â‚¬ nime pikkusega {len(nimi)}.")
