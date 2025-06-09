@@ -27,7 +27,7 @@ def sorteeri_palgad(inimesed, palgad, kasvav=True):
     for nimi, palk in sorted(zip(inimesed, palgad), key=lambda x: x[1], reverse=not kasvav):
         print(f"{nimi}: {palk}€")
 
-def votrdsed_palgad(inimesed, palgad):
+def votrdsed_palgad(inimesed, palgad): #Одинаковые зарплаты
     from collections import defaultdict
     d = defaultdict(list)
     for nimi, palk in zip(inimesed, palgad):
