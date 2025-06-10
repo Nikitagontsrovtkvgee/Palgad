@@ -42,14 +42,14 @@ def otsi_palk_nime_jargi(inimesed, palgad):
         if n.lower() == nimi:
             print(f"{n} saab {p}€")
 
-def suurem_vaiksem_summa(inimesed, palgad):
+def suurem_vaiksem_summa(inimesed, palgad): # Показывает всех, у кого зарплата больше или меньше заданной
     valik = input("Kas soovid 'suurem' või 'väiksem' kui summa? ")
     piir = int(input("Sisesta summa: "))
     for nimi, palk in zip(inimesed, palgad):
         if (valik == "suurem" and palk > piir) or (valik == "väiksem" and palk < piir):
             print(f"{nimi} - {palk}€")
 
-def top_inimesed(inimesed, palgad, T=3):
+def top_inimesed(inimesed, palgad, T=3): # Показывает T самых бедных и богатых
     top = sorted(zip(inimesed, palgad), key=lambda x: x[1])
     print(f"\nTOP {T} vaeseimat:")
     for nimi, palk in top[:T]: print(f"{nimi}: {palk}€")
@@ -63,15 +63,15 @@ def keskmine_palk(inimesed, palgad):
         if palk == round(k):
             print(f"{nimi} saab täpselt keskmist palka.")
 
-def tulumaks(inimesed, palgad):
+def tulumaks(inimesed, palgad): # Считает зарплату после налога
     for nimi, palk in zip(inimesed, palgad):
         print(f"{nimi}: Bruto {palk}€, Neto {palk * 0.8:.2f}€")
 
-def sorteeri_nimed(inimesed, palgad, reverse=False):
+def sorteeri_nimed(inimesed, palgad, reverse=False): # Сортирует по имени (алфавиту)
     for nimi, palk in sorted(zip(inimesed, palgad), key=lambda x: x[0], reverse=reverse):
         print(f"{nimi}: {palk}€")
 
-def kustuta_alla_keskmise(inimesed, palgad):
+def kustuta_alla_keskmise(inimesed, palgad): # Удаляет тех, у кого зарплата ниже средней
     k = sum(palgad) / len(palgad)
     i = 0
     while i < len(palgad):
@@ -82,18 +82,18 @@ def kustuta_alla_keskmise(inimesed, palgad):
         else:
             i += 1
 
-def puhasta_andmed(inimesed, palgad):
+def puhasta_andmed(inimesed, palgad): # Приводит имена к правильному виду
     for i in range(len(inimesed)):
         inimesed[i] = inimesed[i].capitalize()
         palgad[i] = int(palgad[i])
 
-def prognoos_palk(inimesed, palgad, T):
+def prognoos_palk(inimesed, palgad, T): # Считает будущую зарплату с ростом 5% в год
     nimi = input("Sisesta isiku nimi: ")
     for i, n in enumerate(inimesed):
         if n == nimi:
             print(f"{n} palk {T} aasta pärast: {palgad[i] * (1.05 ** T):.2f}€")
 
-def nime_muutmine(inimesed):
+def nime_muutmine(inimesed): # Меняет имя каждого третьего человека
     for i in range(2, len(inimesed), 3):
         inimesed[i] = input(f"Sisesta uus nimi isikule {inimesed[i]}: ")
 
